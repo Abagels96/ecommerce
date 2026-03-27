@@ -2,26 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
 import { buttonClassName } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import { products as seedProducts } from "@/data/products";
 import { getMergedProducts } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 import { setStoredProducts } from "@/lib/storage";
 import type { Product } from "@/types";
 
 export function DashboardProductsClient() {
-  const [items, setItems] = useState<Product[]>(() => [...seedProducts]);
-
-  const refresh = useCallback(() => {
-    setItems(getMergedProducts());
-  }, []);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  const [items, setItems] = useState<Product[]>(() => getMergedProducts());
 
   const handleDelete = (id: string, name: string) => {
     if (!confirm(`Remove “${name}” from the catalog? This saves to localStorage.`)) {

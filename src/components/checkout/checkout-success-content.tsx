@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useMemo } from "react";
 
 import { buttonClassName } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { findMergedProductById } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 import { getMockOrders } from "@/lib/storage";
@@ -28,19 +27,11 @@ function formatOrderDate(iso: string): string {
 export function CheckoutSuccessContent({
   orderIdFromQuery,
 }: CheckoutSuccessContentProps) {
-  const [order, setOrder] = useState<MockOrder | null | undefined>(undefined);
-
-  useEffect(() => {
-    if (!orderIdFromQuery) {
-      setOrder(null);
-      return;
-    }
+  const order = useMemo<MockOrder | null>(() => {
+    if (!orderIdFromQuery) return null;
     const orders = getMockOrders();
-    const found = orders?.find((o) => o.id === orderIdFromQuery) ?? null;
-    setOrder(found);
+    return orders?.find((o) => o.id === orderIdFromQuery) ?? null;
   }, [orderIdFromQuery]);
-
-  const loading = order === undefined && orderIdFromQuery;
 
   return (
     <div className="mx-auto max-w-xl">
@@ -77,14 +68,7 @@ export function CheckoutSuccessContent({
           Confirmation summary
         </h2>
 
-        {loading ? (
-          <div className="mt-4 space-y-3" aria-busy="true" aria-label="Loading order">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-4/5" />
-            <Skeleton className="h-4 w-3/5" />
-            <Skeleton className="h-20 w-full rounded-xl" />
-          </div>
-        ) : orderIdFromQuery ? (
+        {orderIdFromQuery ? (
           <>
             <dl className="mt-4 space-y-3 text-sm">
               <div className="flex flex-wrap justify-between gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-800">

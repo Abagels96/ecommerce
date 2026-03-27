@@ -1,11 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
 
-import { products as seedProducts } from "@/data/products";
 import { getMergedProducts } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
@@ -347,12 +344,7 @@ const META = {
 >;
 
 export function CategoryHighlightsSection() {
-  const pathname = usePathname();
-  const [catalog, setCatalog] = useState<Product[]>(() => [...seedProducts]);
-
-  useEffect(() => {
-    setCatalog(getMergedProducts());
-  }, [pathname]);
+  const catalog = getMergedProducts();
 
   return (
     <section className="section-y border-b border-zinc-200/80 dark:border-zinc-800/80">

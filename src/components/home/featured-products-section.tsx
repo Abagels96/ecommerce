@@ -1,24 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { buttonClassName } from "@/components/ui/button";
-import { products as seedProducts } from "@/data/products";
 import { getMergedProducts } from "@/lib/catalog";
-import type { Product } from "@/types";
 
 const MAX_FEATURED = 6;
 
 export function FeaturedProductsSection() {
-  const pathname = usePathname();
-  const [catalog, setCatalog] = useState<Product[]>(() => [...seedProducts]);
-
-  useEffect(() => {
-    setCatalog(getMergedProducts());
-  }, [pathname]);
+  const catalog = getMergedProducts();
 
   const featured = useMemo(
     () => catalog.filter((p) => p.featured).slice(0, MAX_FEATURED),

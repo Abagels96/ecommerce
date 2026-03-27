@@ -1,15 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { buttonClassName } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { products as seedProducts } from "@/data/products";
 import { getMergedProducts } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 import { getMockOrders } from "@/lib/storage";
-import type { MockOrder } from "@/types";
 
 function formatDate(iso: string): string {
   try {
@@ -23,17 +20,11 @@ function formatDate(iso: string): string {
 }
 
 export function DashboardOverview() {
-  const [orders, setOrders] = useState<MockOrder[] | null>(null);
+  const orders = useMemo(() => getMockOrders() ?? [], []);
 
-  const [productCount, setProductCount] = useState(seedProducts.length);
-
-  useEffect(() => {
-    setOrders(getMockOrders() ?? []);
-    setProductCount(getMergedProducts().length);
-  }, []);
+  const productCount = useMemo(() => getMergedProducts().length, []);
 
   const stats = useMemo(() => {
-    if (!orders) return null;
     const totalOrders = orders.length;
     const revenue = orders.reduce((sum, o) => sum + o.total, 0);
     return { totalOrders, revenue };
@@ -48,8 +39,6 @@ export function DashboardOverview() {
       )
       .slice(0, 6);
   }, [orders]);
-
-  const loading = orders === null;
 
   return (
     <div className="space-y-10">
@@ -88,7 +77,7 @@ export function DashboardOverview() {
                 Mock orders
               </p>
               <p className="mt-2 text-3xl font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
-                {loading ? "—" : stats?.totalOrders ?? 0}
+                {stats.totalOrders}
               </p>
               <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                 Saved in localStorage
@@ -101,7 +90,7 @@ export function DashboardOverview() {
                 Revenue estimate
               </p>
               <p className="mt-2 text-3xl font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
-                {loading ? "—" : formatPrice(stats?.revenue ?? 0)}
+                {formatPrice(stats.revenue)}
               </p>
               <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                 Sum of order totals (demo)
@@ -121,22 +110,7 @@ export function DashboardOverview() {
           </p>
         </div>
 
-        {loading ? (
-          <div className="space-y-4 px-5 py-10" aria-busy="true" aria-label="Loading orders">
-            <div className="flex gap-4">
-              <Skeleton className="h-4 flex-1" />
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="hidden h-4 w-32 sm:block" />
-            </div>
-            {[1, 2, 3].map((row) => (
-              <div key={row} className="flex gap-4 border-t border-zinc-100 pt-4 dark:border-zinc-800">
-                <Skeleton className="h-4 flex-1" />
-                <Skeleton className="h-4 w-28" />
-                <Skeleton className="hidden h-4 w-40 sm:block" />
-              </div>
-            ))}
-          </div>
-        ) : recentOrders.length === 0 ? (
+        {recentOrders.length === 0 ? (
           <p className="px-5 py-12 text-center text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
             No orders yet. Complete a checkout to see mock orders here.
           </p>

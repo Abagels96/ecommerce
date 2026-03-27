@@ -20,11 +20,10 @@ export function ProductCard({ product }: ProductCardProps) {
       <Link
         href={href}
         className="relative block aspect-[4/3] bg-zinc-100 outline-none dark:bg-zinc-900"
-        aria-label={`View ${product.name}`}
       >
         <Image
           src={product.image}
-          alt=""
+          alt={product.name}
           fill
           className="object-cover transition-transform duration-500 ease-out group-hover/card:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover/card:scale-100"
           sizes="(max-width: 768px) 100vw, 33vw"

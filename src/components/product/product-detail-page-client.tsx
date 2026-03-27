@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 import { PageContainer } from "@/components/layout/PageContainer";
 import { ProductPurchasePanel } from "@/components/product/product-purchase-panel";
@@ -10,7 +10,6 @@ import { ProductGrid } from "@/components/products/ProductGrid";
 import { ProductStockBadge } from "@/components/products/stock-badge";
 import { Badge } from "@/components/ui/badge";
 import { buttonClassName } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   findMergedProductById,
   getRelatedProductsMerged,
@@ -19,31 +18,10 @@ import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/types";
 
 export function ProductDetailPageClient({ productId }: { productId: string }) {
-  const [product, setProduct] = useState<Product | null | undefined>(undefined);
-
-  useEffect(() => {
-    setProduct(findMergedProductById(productId) ?? null);
-  }, [productId]);
-
-  if (product === undefined) {
-    return (
-      <PageContainer className="pb-16 sm:pb-20">
-        <Skeleton className="h-4 w-64 max-w-full" />
-        <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-12">
-          <Skeleton className="aspect-square w-full rounded-2xl" />
-          <div className="space-y-4">
-            <div className="flex gap-2">
-              <Skeleton className="h-6 w-20 rounded-full" />
-              <Skeleton className="h-6 w-16 rounded-full" />
-            </div>
-            <Skeleton className="h-10 w-full max-w-md" />
-            <Skeleton className="h-10 w-32" />
-            <Skeleton className="h-24 w-full" />
-          </div>
-        </div>
-      </PageContainer>
-    );
-  }
+  const product = useMemo<Product | null>(
+    () => findMergedProductById(productId) ?? null,
+    [productId],
+  );
 
   if (product === null) {
     return (
@@ -169,7 +147,11 @@ export function ProductDetailPageClient({ productId }: { productId: string }) {
             </p>
           </div>
 
-          <ProductPurchasePanel productId={product.id} stock={product.stock} />
+          <ProductPurchasePanel
+            key={product.id}
+            productId={product.id}
+            stock={product.stock}
+          />
         </div>
       </div>
 

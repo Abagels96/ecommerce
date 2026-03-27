@@ -1,49 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useMemo } from "react";
 
 import { buttonClassName } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getMergedProducts } from "@/lib/catalog";
 import type { Product } from "@/types";
 
 import { ProductForm } from "./product-form";
 
 export function EditProductPageClient({ productId }: { productId: string }) {
-  const [product, setProduct] = useState<Product | null | undefined>(undefined);
-
-  useEffect(() => {
+  const product = useMemo<Product | null>(() => {
     const merged = getMergedProducts();
-    setProduct(merged.find((p) => p.id === productId) ?? null);
+    return merged.find((p) => p.id === productId) ?? null;
   }, [productId]);
-
-  if (product === undefined) {
-    return (
-      <div className="mx-auto max-w-3xl space-y-8" aria-busy="true" aria-label="Loading product">
-        <div className="space-y-3">
-          <Skeleton className="h-3 w-24" />
-          <Skeleton className="h-9 w-56 max-w-full" />
-          <Skeleton className="h-4 w-full max-w-md" />
-        </div>
-        <div className="surface-card space-y-6 p-6 sm:p-8">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <Skeleton className="h-11 sm:col-span-2" />
-            <Skeleton className="h-11" />
-            <Skeleton className="h-11" />
-            <Skeleton className="h-11" />
-            <Skeleton className="h-11" />
-            <Skeleton className="h-11 sm:col-span-2" />
-            <Skeleton className="h-24 sm:col-span-2" />
-          </div>
-          <div className="flex gap-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-            <Skeleton className="h-10 w-36" />
-            <Skeleton className="h-10 w-24" />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (product === null) {
     return (

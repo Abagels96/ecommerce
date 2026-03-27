@@ -1,13 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
-import { products as seedProducts } from "@/data/products";
 import { getMergedProducts } from "@/lib/catalog";
 import {
   filterShopProducts,
@@ -15,7 +14,6 @@ import {
   sortShopProducts,
   type ShopSort,
 } from "@/lib/shop-products";
-import type { Product } from "@/types";
 
 const SORT_OPTIONS: { value: ShopSort; label: string }[] = [
   { value: "newest", label: "Newest first" },
@@ -26,36 +24,32 @@ const SORT_OPTIONS: { value: ShopSort; label: string }[] = [
 const selectClass =
   "h-10 w-full min-w-0 rounded-lg border border-zinc-300/90 bg-white px-3 text-sm text-zinc-900 shadow-sm transition-[border-color,box-shadow] duration-200 hover:border-zinc-400/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400 disabled:cursor-not-allowed disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:border-zinc-500 dark:focus-visible:outline-zinc-500 sm:w-auto";
 
-type ShopCatalogProps = {
-  initialCategory?: string;
-};
+export function ShopCatalog() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-export function ShopCatalog({ initialCategory }: ShopCatalogProps) {
-  const pathname = usePathname();
-  const [catalog, setCatalog] = useState<Product[]>(() => [...seedProducts]);
-
-  useEffect(() => {
-    setCatalog(getMergedProducts());
-  }, [pathname]);
+  const catalog = getMergedProducts();
 
   const categories = useMemo(() => getProductCategories(catalog), [catalog]);
 
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<string | "all">(() =>
-    initialCategory &&
-    getProductCategories(seedProducts).includes(initialCategory)
-      ? initialCategory
-      : "all",
-  );
-  const [sort, setSort] = useState<ShopSort>("newest");
+  const categoryParam = searchParams.get("category")?.toLowerCase().trim() ?? "";
 
-  useEffect(() => {
-    if (initialCategory && categories.includes(initialCategory)) {
-      setCategory(initialCategory);
-    } else if (!initialCategory) {
-      setCategory("all");
-    }
-  }, [initialCategory, categories]);
+  const category = useMemo((): string | "all" => {
+    if (!categoryParam) return "all";
+    if (categories.includes(categoryParam)) return categoryParam;
+    return "all";
+  }, [categoryParam, categories]);
+
+  const setCategoryFilter = (next: string | "all") => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (next === "all") params.delete("category");
+    else params.set("category", next);
+    const qs = params.toString();
+    router.push(qs ? `/shop?${qs}` : "/shop");
+  };
+
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState<ShopSort>("newest");
 
   const filtered = useMemo(
     () =>
@@ -73,7 +67,7 @@ export function ShopCatalog({ initialCategory }: ShopCatalogProps) {
 
   const reset = () => {
     setSearch("");
-    setCategory("all");
+    setCategoryFilter("all");
     setSort("newest");
   };
 
@@ -119,7 +113,7 @@ export function ShopCatalog({ initialCategory }: ShopCatalogProps) {
                   className={selectClass}
                   value={category}
                   onChange={(e) =>
-                    setCategory(e.target.value as "all" | string)
+                    setCategoryFilter(e.target.value as "all" | string)
                   }
                   aria-label="Filter by category"
                 >
