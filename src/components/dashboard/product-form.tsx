@@ -25,7 +25,7 @@ const emptyDefaults = (): ProductFormInput => ({
   slug: "",
   description: "",
   price: 9.99,
-  image: "/products/item-1.jpg",
+  image: "/products/prod-01.jpg",
   category: "",
   featured: false,
   stock: 10,
@@ -243,7 +243,7 @@ export function ProductForm(props: ProductFormProps) {
           />
           <Input
             label="Image path or URL"
-            placeholder="/products/item-1.jpg"
+            placeholder="/products/prod-01.jpg"
             error={errors.image?.message}
             {...register("image")}
           />
