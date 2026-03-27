@@ -58,7 +58,7 @@ export function DashboardOverview() {
           Dashboard
         </h1>
         <p className="mt-3 max-w-2xl text-pretty leading-relaxed text-zinc-600 dark:text-zinc-400">
-          Local-only metrics: catalog from seed data, orders from{" "}
+          ABails Shop metrics: catalog from seed data, orders from{" "}
           <code className="rounded bg-zinc-100 px-1 py-0.5 text-sm dark:bg-zinc-900">
             mock_orders
           </code>{" "}
