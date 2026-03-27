@@ -18,10 +18,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Local Shop — MVP",
-    template: "%s — Local Shop",
+    default: "ABails Shop — MVP",
+    template: "%s — ABails Shop",
   },
-  description: "Local-only e-commerce portfolio demo with mock data.",
+  description: "ABails Shop — e-commerce portfolio demo with mock data.",
 };
 
 export default function RootLayout({

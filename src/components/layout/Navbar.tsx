@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/use-cart";
 
-const BRAND = "Local Shop";
+const BRAND = "ABails Shop";
 
 const nav = [
   { href: "/", label: "Home" },
