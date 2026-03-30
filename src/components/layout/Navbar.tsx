@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -29,9 +30,17 @@ export function Navbar() {
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:h-16 sm:gap-6 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="text-base font-semibold tracking-tight text-zinc-900 transition-colors duration-200 hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300"
+          className="flex items-center gap-2.5 text-base font-semibold tracking-tight text-zinc-900 transition-colors duration-200 hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300"
         >
-          {BRAND}
+          <Image
+            src="/abails-logo.png"
+            alt=""
+            width={36}
+            height={36}
+            className="h-9 w-9 shrink-0 rounded-lg object-cover shadow-sm ring-1 ring-zinc-200/80 dark:ring-zinc-700/80"
+            priority
+          />
+          <span>{BRAND}</span>
         </Link>
 
         <nav
