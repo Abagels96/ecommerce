@@ -26,8 +26,8 @@ export function HeroSection() {
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-zinc-600 sm:text-xl dark:text-zinc-400">
             A portfolio storefront built with mock data and browser storage — browse
-            headphones, keyboards, monitors, and more. No backend, no checkout
-            rails — just a fast, modern shopping UI.
+            moms, baby, kitchen, laptops, bedroom, and car categories. No
+            backend, no checkout rails — just a fast, modern shopping UI.
           </p>
           <div className="mt-10 flex flex-wrap gap-3 sm:gap-4">
             <Link

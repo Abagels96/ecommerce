@@ -20,12 +20,16 @@ import type { Product } from "@/types";
 
 const categorySuggestions = getProductCategories(seedProducts);
 
+const DEFAULT_PRODUCT_IMAGE =
+  seedProducts[0]?.image ??
+  "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp";
+
 const emptyDefaults = (): ProductFormInput => ({
   name: "",
   slug: "",
   description: "",
   price: 9.99,
-  image: "/products/prod-01.jpg",
+  image: DEFAULT_PRODUCT_IMAGE,
   category: "",
   featured: false,
   stock: 10,
@@ -220,7 +224,7 @@ export function ProductForm(props: ProductFormProps) {
             <Input
               label="Category"
               list="category-suggestions"
-              placeholder="e.g. headphones"
+              placeholder="e.g. moms"
               hint="Pick a suggestion or type a new category."
               error={errors.category?.message}
               {...register("category")}
@@ -243,7 +247,7 @@ export function ProductForm(props: ProductFormProps) {
           />
           <Input
             label="Image path or URL"
-            placeholder="/products/prod-01.jpg"
+            placeholder="https://… or /products/photo.jpg"
             error={errors.image?.message}
             {...register("image")}
           />

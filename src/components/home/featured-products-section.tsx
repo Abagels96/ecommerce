@@ -26,8 +26,8 @@ export function FeaturedProductsSection() {
               Featured picks
             </h2>
             <p className="mt-3 max-w-xl text-pretty text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
-              Highlights from the merged catalog — desk tech, mom & baby, and home
-              picks marked featured in seed data or in admin.
+              Highlights from the merged catalog — items marked featured in seed
+              data or in admin (localStorage overrides apply when set).
             </p>
           </div>
           <Link
