@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
+import { publicAsset } from "@/lib/public-asset";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/use-cart";
 
@@ -33,7 +34,7 @@ export function Navbar() {
           className="flex items-center gap-2.5 text-base font-semibold tracking-tight text-zinc-900 transition-colors duration-200 hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300"
         >
           <Image
-            src="/abails-logo.png"
+            src={publicAsset("/abails-logo.png")}
             alt=""
             width={36}
             height={36}

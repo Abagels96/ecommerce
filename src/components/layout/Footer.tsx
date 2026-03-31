@@ -1,12 +1,14 @@
 import Image from "next/image";
 
+import { publicAsset } from "@/lib/public-asset";
+
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-zinc-200/90 bg-zinc-50/95 dark:border-zinc-800/90 dark:bg-zinc-950/60">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8">
         <div className="flex flex-col items-center gap-3">
           <Image
-            src="/abails-logo.png"
+            src={publicAsset("/abails-logo.png")}
             alt=""
             width={40}
             height={40}
