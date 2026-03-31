@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ABails Shop
 
-## Getting Started
+Portfolio e-commerce demo: browse products, use a client-side cart, explore a mock checkout flow, and manage a merged catalog (seed data + **localStorage** edits) from a small dashboard. No real payments or backend.
 
-First, run the development server:
+## Stack
+
+- **Next.js** 16 (App Router), **React** 19, **TypeScript**
+- **Tailwind CSS** 4, **next-themes** (light / dark / system)
+- **Zustand** (cart), **React Hook Form** + **Zod** (forms)
+
+## Scripts
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # development server
+npm run build    # static export → out/ (serve that folder with any static host or GitHub Pages)
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To preview the export locally, serve the `out` folder with any static file server and use a URL that includes your base path (default **`/ecommerce/`**).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+By default the app is configured for a **GitHub Pages project site** at `/ecommerce`, so in development you usually open:
 
-## Learn More
+**http://localhost:3000/ecommerce/**
 
-To learn more about Next.js, take a look at the following resources:
+To run at the site root instead (e.g. `http://localhost:3000/`), create `.env.local`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NEXT_PUBLIC_BASE_PATH=
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Rebuild after changing this.
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Shop** — search, category filter, sort; product grid and detail pages (static paths from the product catalog).
+- **Cart & checkout** — cart persisted in the browser; checkout is UI-only (no payment processing).
+- **Dashboard** — overview and product list; create/edit products stored in **localStorage** and merged with seed data.
+- **UI** — responsive layout (including a mobile nav menu), light and dark themes (toggle in the header).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Static export & GitHub Pages
+
+The app uses `output: "export"` and emits static files under **`out/`**. Deployment is automated via **GitHub Actions** (`.github/workflows/deploy-github-pages.yml`) when you push to `main` or `master`.
+
+In the repository **Settings → Pages**: set the source to **GitHub Actions** (not “Deploy from a branch” unless you choose that flow). The live URL for a repo named `ecommerce` is:
+
+`https://<username>.github.io/ecommerce/`
+
+## Project layout (high level)
+
+| Path | Purpose |
+|------|---------|
+| `src/app/` | Routes, layouts, global styles |
+| `src/components/` | UI, layout, feature components |
+| `src/data/products.ts` | Seed product data |
+| `src/store/` | Cart store |
+| `public/` | Static assets (e.g. logo) |
+
+## License
+
+Private / portfolio use unless otherwise specified by the author.
